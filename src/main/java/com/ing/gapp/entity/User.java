@@ -9,6 +9,15 @@ public class User extends BaseEntity {
     private String password;
     private List<Role> roles = new ArrayList<>();
 
+    public User() { }
+
+    public User(int id, String name, String password, int version) {
+        setId(id);
+        this.name = name;
+        this.password = password;
+        setVersion(version);
+    }
+
     public String getName() {
         return name;
     }

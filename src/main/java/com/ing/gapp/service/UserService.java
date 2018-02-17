@@ -1,17 +1,24 @@
 package com.ing.gapp.service;
 
 import com.ing.gapp.entity.User;
+import com.ing.gapp.rowmapper.UserRowMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Component
 public class UserService {
-    private static UserService instance;
     private static final Logger LOGGER = Logger.getLogger(UserService.class.getName());
-
+    private static UserService instance;
     private Map<Integer, User> users = new HashMap<>();
     private int nextId = 0;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * @return a reference to an example facade for UserService objects.
@@ -34,59 +41,13 @@ public class UserService {
     /**
      * Finds all User's that match given filter.
      *
-     * @param stringFilter
-     *            filter that returned objects should match or null/empty string
-     *            if all objects should be returned.
+     * @param stringFilter filter that returned objects should match or null/empty string
+     *                     if all objects should be returned.
      * @return list a User objects
      */
     public synchronized List<User> findAll(String stringFilter) {
-        ArrayList<User> arrayList = new ArrayList<>();
-        for (User user : users.values()) {
-            try {
-                boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
-                        || user.toString().toLowerCase().contains(stringFilter.toLowerCase());
-                if (passesFilter) {
-                    arrayList.add(user.clone());
-                }
-            } catch (CloneNotSupportedException ex) {
-                Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        Collections.sort(arrayList, (o1, o2) -> (int) (o2.getId() - o1.getId()));
-        return arrayList;
-    }
-
-    /**
-     * Finds all User's that match given filter and limits the resultset.
-     *
-     * @param stringFilter
-     *            filter that returned objects should match or null/empty string
-     *            if all objects should be returned.
-     * @param start
-     *            the index of first result
-     * @param maxResults
-     *            maximum result count
-     * @return list a User objects
-     */
-    public synchronized List<User> findAll(String stringFilter, int start, int maxResults) {
-        ArrayList<User> arrayList = new ArrayList<>();
-        for (User user : users.values()) {
-            try {
-                boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
-                        || user.toString().toLowerCase().contains(stringFilter.toLowerCase());
-                if (passesFilter) {
-                    arrayList.add(user.clone());
-                }
-            } catch (CloneNotSupportedException ex) {
-                Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        Collections.sort(arrayList, (o1, o2) -> (int) (o2.getId() - o1.getId()));
-        int end = start + maxResults;
-        if (end > arrayList.size()) {
-            end = arrayList.size();
-        }
-        return arrayList.subList(start, end);
+        return jdbcTemplate.query("SELECT id, user_name, user_password, version from TB_Users where user_name like ?",
+                new Object[]{"%" + stringFilter + "%"}, new UserRowMapper());
     }
 
     /**
@@ -99,8 +60,7 @@ public class UserService {
     /**
      * Deletes a user from a system
      *
-     * @param value
-     *            the User to be deleted
+     * @param value the User to be deleted
      */
     public synchronized void delete(User value) {
         users.remove(value.getId());
@@ -126,29 +86,37 @@ public class UserService {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-        users.put(entry.getId(), entry);
+        jdbcTemplate.update("Insert into TB_Users(id, user_name, user_password, version) values (?, ?, ?, ?)",
+                entry.getId(), entry.getName(), entry.getPassword(), entry.getVersion());
     }
 
     /**
      * Sample data generation
      */
     public void ensureTestData() {
-        if (findAll().isEmpty()) {
-            final String[] names = new String[] { "Gabrielle Patel", "Brian Robinson", "Eduardo Haugen",
-                    "Koen Johansen", "Alejandro Macdonald", "Angel Karlsson", "Yahir Gustavsson", "Haiden Svensson",
-                    "Emily Stewart", "Corinne Davis", "Ryann Davis", "Yurem Jackson", "Kelly Gustavsson",
-                    "Eileen Walker", "Katelyn Martin", "Israel Carlsson", "Quinn Hansson", "Makena Smith",
-                    "Danielle Watson", "Leland Harris", "Gunner Karlsen", "Jamar Olsson", "Lara Martin",
-                    "Ann Andersson", "Remington Andersson", "Rene Carlsson", "Elvis Olsen", "Solomon Olsen",
-                    "Jaydan Jackson", "Bernard Nilsen" };
-            for (int i = 0; i < names.length; i++) {
-                String name = names[i];
-                User user = new User();
-                user.setId(i);
-                user.setName(name);
-                user.setVersion(0);
-                save(user);
-            }
+        String createDB = "CREATE TABLE TB_Users (" +
+                "id INTEGER GENERATED BY DEFAULT AS IDENTITY, " +
+                "user_name VARCHAR(64), " +
+                "user_password VARCHAR(64), " +
+                "version INTEGER " +
+                ")";
+
+        jdbcTemplate.execute(createDB);
+
+        final String[] names = new String[]{"Gabrielle Patel", "Brian Robinson", "Eduardo Haugen",
+                "Koen Johansen", "Alejandro Macdonald", "Angel Karlsson", "Yahir Gustavsson", "Haiden Svensson",
+                "Emily Stewart", "Corinne Davis", "Ryann Davis", "Yurem Jackson", "Kelly Gustavsson",
+                "Eileen Walker", "Katelyn Martin", "Israel Carlsson", "Quinn Hansson", "Makena Smith",
+                "Danielle Watson", "Leland Harris", "Gunner Karlsen", "Jamar Olsson", "Lara Martin",
+                "Ann Andersson", "Remington Andersson", "Rene Carlsson", "Elvis Olsen", "Solomon Olsen",
+                "Jaydan Jackson", "Bernard Nilsen"};
+        for (int i = 0; i < names.length; i++) {
+            String name = names[i];
+            User user = new User();
+            user.setId(i);
+            user.setName(name);
+            user.setVersion(0);
+            save(user);
         }
     }
 }

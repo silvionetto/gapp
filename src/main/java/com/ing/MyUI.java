@@ -10,8 +10,10 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -22,14 +24,19 @@ import java.util.List;
  * The UI is initialized using {@link #init(VaadinRequest)}. This method is intended to be 
  * overridden to add component to the user interface and initialize non-component functionality.
  */
-@Theme("mytheme")
+@SpringUI
 public class MyUI extends UI {
-    private UserService service = UserService.getInstance();
+
+    @Autowired
+    private UserService service;
+
     private Grid<User> grid = new Grid<>(User.class);
     private TextField filterText = new TextField();
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+        //service.ensureTestData();
+
         final VerticalLayout layout = new VerticalLayout();
 
 
