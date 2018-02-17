@@ -89,6 +89,17 @@ public class UserService {
         return arrayList.subList(start, end);
     }
 
+    public synchronized User findByName(String name) {
+        User result = null;
+        for(User user : users.values()) {
+            if (name.equals(user.getName())) {
+                result = user;
+                break;
+            }
+        }
+        return result;
+    }
+
     /**
      * @return the amount of all user in the system
      */
@@ -134,21 +145,32 @@ public class UserService {
      */
     public void ensureTestData() {
         if (findAll().isEmpty()) {
-            final String[] names = new String[] { "Gabrielle Patel", "Brian Robinson", "Eduardo Haugen",
-                    "Koen Johansen", "Alejandro Macdonald", "Angel Karlsson", "Yahir Gustavsson", "Haiden Svensson",
-                    "Emily Stewart", "Corinne Davis", "Ryann Davis", "Yurem Jackson", "Kelly Gustavsson",
-                    "Eileen Walker", "Katelyn Martin", "Israel Carlsson", "Quinn Hansson", "Makena Smith",
-                    "Danielle Watson", "Leland Harris", "Gunner Karlsen", "Jamar Olsson", "Lara Martin",
-                    "Ann Andersson", "Remington Andersson", "Rene Carlsson", "Elvis Olsen", "Solomon Olsen",
-                    "Jaydan Jackson", "Bernard Nilsen" };
+            final String[] names = new String[] { "admin", "user", "bt"};
             for (int i = 0; i < names.length; i++) {
                 String name = names[i];
                 User user = new User();
                 user.setId(i);
                 user.setName(name);
+                user.setPassword(name);
                 user.setVersion(0);
                 save(user);
             }
         }
+    }
+
+    /**
+     * Validate a user name and password.
+     *
+     * @param userName the user name
+     * @param userPassword the user password
+     * @return true if is a valid user
+     */
+    public synchronized boolean login(String userName, String userPassword) {
+        boolean valid = false;
+        User user = findByName(userName);
+        if (user != null && userPassword.equals(user.getPassword())) {
+            valid = true;
+        }
+        return valid;
     }
 }

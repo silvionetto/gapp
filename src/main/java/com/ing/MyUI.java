@@ -3,6 +3,7 @@ package com.ing;
 import javax.servlet.annotation.WebServlet;
 
 import com.ing.gapp.entity.User;
+import com.ing.gapp.form.LoginForm;
 import com.ing.gapp.service.UserService;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -24,32 +25,14 @@ import java.util.List;
  */
 @Theme("mytheme")
 public class MyUI extends UI {
-    private UserService service = UserService.getInstance();
-    private Grid<User> grid = new Grid<>(User.class);
-    private TextField filterText = new TextField();
+
+    private final LoginForm loginForm = new LoginForm(this);
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         final VerticalLayout layout = new VerticalLayout();
 
-
-        grid.setColumns("id", "name");
-
-        filterText.setPlaceholder("filter by name...");
-        filterText.addValueChangeListener(e -> updateList());
-        filterText.setValueChangeMode(ValueChangeMode.LAZY);
-
-        Button clearFilter = new Button(VaadinIcons.CLOSE);
-        clearFilter.setDescription("Clear the current filter");
-        clearFilter.addClickListener(event -> filterText.clear());
-
-        CssLayout filtering = new CssLayout();
-        filtering.addComponents(filterText, clearFilter);
-        filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-
-        layout.addComponents(filtering, grid);
-
-        updateList();
+        layout.addComponent(loginForm);
 
         setContent(layout);
     }
@@ -59,8 +42,4 @@ public class MyUI extends UI {
     public static class MyUIServlet extends VaadinServlet {
     }
 
-    public void updateList() {
-        List<User> users = service.findAll(filterText.getValue());
-        grid.setItems(users);
-    }
 }
