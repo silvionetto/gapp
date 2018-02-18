@@ -1,4 +1,4 @@
-package com.ing.gapp;
+package com.ing;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

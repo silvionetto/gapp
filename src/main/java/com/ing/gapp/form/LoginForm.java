@@ -13,32 +13,33 @@ public class LoginForm extends FormLayout {
     private final PasswordField userPassword = new PasswordField("Password:");
     private final Button login = new Button("Login");
 
-    private final UserService userService = UserService.getInstance();
+    private final UserService userService;
     private final MyUI myUI;
 
-   public LoginForm(MyUI myUI) {
-       this.myUI = myUI;
+    public LoginForm(MyUI myUI, UserService userService) {
+        this.myUI = myUI;
+        this.userService = userService;
 
-       setSizeUndefined();
-       HorizontalLayout buttons = new HorizontalLayout(login);
-       addComponents(error, userName, userPassword, buttons);
-       login.setStyleName(ValoTheme.BUTTON_PRIMARY);
-       login.setClickShortcut(KeyCode.ENTER);
+        setSizeUndefined();
+        HorizontalLayout buttons = new HorizontalLayout(login);
+        addComponents(error, userName, userPassword, buttons);
+        login.setStyleName(ValoTheme.BUTTON_PRIMARY);
+        login.setClickShortcut(KeyCode.ENTER);
 
-       login.addClickListener(e -> this.login());
-   }
+        login.addClickListener(e -> this.login());
+    }
 
-   private void login() {
-       String user = userName.getValue();
-       String password = userPassword.getValue();
-       if (user != null && password != null) {
-           if (userService.login(user, password)) {
+    private void login() {
+        String user = userName.getValue();
+        String password = userPassword.getValue();
+        if (user != null && user.length() > 0 && password != null && password.length() > 0) {
+            if (userService.login(user, password)) {
                 setVisible(false);
-           } else {
-               error.setValue("Invalid login or password!");
-           }
-       } else {
-           error.setValue("User or password is empty!");
-       }
-   }
+            } else {
+                error.setValue("Invalid login or password!");
+            }
+        } else {
+            error.setValue("User or password is empty!");
+        }
+    }
 }

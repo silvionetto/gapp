@@ -1,8 +1,9 @@
-package com.ing.gapp;
+package com.ing;
 
 import javax.servlet.annotation.WebServlet;
 
 import com.ing.gapp.form.LoginForm;
+import com.ing.gapp.service.UserService;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
@@ -22,15 +23,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Theme("mytheme")
 public class MyUI extends UI {
 
-    private LoginForm loginForm;
-
     @Autowired
-    public MyUI(LoginForm loginForm) {
-        this.loginForm = loginForm;
-    }
+    private UserService userService;
+
+    private LoginForm loginForm;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+        userService.ensureTestData();
+
+        loginForm = new LoginForm(this, userService);
+
         final VerticalLayout layout = new VerticalLayout();
 
         layout.addComponent(loginForm);
