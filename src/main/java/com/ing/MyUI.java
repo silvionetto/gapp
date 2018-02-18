@@ -1,20 +1,15 @@
-package com.ing;
+package com.ing.gapp;
 
 import javax.servlet.annotation.WebServlet;
 
-import com.ing.gapp.entity.User;
 import com.ing.gapp.form.LoginForm;
-import com.ing.gapp.service.UserService;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
-
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -23,10 +18,16 @@ import java.util.List;
  * The UI is initialized using {@link #init(VaadinRequest)}. This method is intended to be 
  * overridden to add component to the user interface and initialize non-component functionality.
  */
+@SpringUI
 @Theme("mytheme")
 public class MyUI extends UI {
 
-    private final LoginForm loginForm = new LoginForm(this);
+    private LoginForm loginForm;
+
+    @Autowired
+    public MyUI(LoginForm loginForm) {
+        this.loginForm = loginForm;
+    }
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
