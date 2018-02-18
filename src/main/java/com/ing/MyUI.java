@@ -30,7 +30,7 @@ public class MyUI extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        userService.ensureTestData();
+        //userService.ensureTestData();
 
         loginForm = new LoginForm(this, userService);
 
