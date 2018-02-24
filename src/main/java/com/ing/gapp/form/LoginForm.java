@@ -1,6 +1,7 @@
 package com.ing.gapp.form;
 
 import com.ing.MyUI;
+import com.ing.gapp.component.Main;
 import com.ing.gapp.service.UserService;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -35,6 +36,7 @@ public class LoginForm extends FormLayout {
         if (user != null && user.length() > 0 && password != null && password.length() > 0) {
             if (userService.login(user, password)) {
                 setVisible(false);
+                myUI.setContent(new Main());
             } else {
                 error.setValue("Invalid login or password!");
             }

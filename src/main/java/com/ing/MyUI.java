@@ -34,11 +34,11 @@ public class MyUI extends UI {
 
         loginForm = new LoginForm(this, userService);
 
-        final VerticalLayout layout = new VerticalLayout();
+        final VerticalLayout root = new VerticalLayout();
+        root.setSizeFull();
+        root.addComponent(loginForm);
 
-        layout.addComponent(loginForm);
-
-        setContent(layout);
+        setContent(root);
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)

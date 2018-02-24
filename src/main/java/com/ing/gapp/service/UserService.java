@@ -49,7 +49,14 @@ public class UserService {
                 new Object[]{"%" + stringFilter + "%"}, new UserRowMapper());
     }
 
+    /**
+     * Find the user by name.
+     *
+     * @param name the name of the user
+     * @return the user
+     */
     public synchronized User findByName(String name) {
+
         return jdbcTemplate.queryForObject("SELECT id, user_name, user_password, version from TB_Users WHERE user_name = ?",
                 new Object[]{name}, new UserRowMapper());
     }

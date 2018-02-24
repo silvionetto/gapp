@@ -13,8 +13,8 @@ public class User extends BaseEntity {
 
     public User(int id, String name, String password, int version) {
         setId(id);
-        this.name = name;
-        this.password = password;
+        setName(name);
+        setPassword(password);
         setVersion(version);
     }
 

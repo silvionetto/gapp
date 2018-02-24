@@ -15052,3 +15052,60 @@ div.v-layout.v-horizontal.v-widget {
 	width: 19px;
 	overflow: hidden;
 }
+
+.mytheme .v-verticallayout-gapp .v-verticallayout-margin {
+	padding: 3px;
+}
+
+.mytheme .gapp .v-label-title {
+	font-size: 24pt;
+	font-weight: bold;
+	color: #FF6600;
+	line-height: 36pt;
+}
+
+.mytheme .gapp .v-label-titlecomment {
+	font-size: 12pt;
+	color: white;
+	line-height: 36pt;
+	background: black;
+}
+
+.mytheme .gapp .v-horizontallayout .v-horizontallayout-spacing-on {
+	background: #FF6600;
+	padding-left: 1px;
+}
+
+.mytheme .gapp .v-panel-caption-menucontainer, .mytheme .gapp .v-panel-caption-detailspanel {
+	padding: 3px;
+	color: white;
+	background: #FF6600;
+	font-size: 12pt;
+	font-weight: bold;
+	line-height: 35pt;
+	height: 44px;
+}
+
+.mytheme .gapp .v-panel-caption-menucontainer {
+	font-weight: bold;
+	text-align: center;
+}
+
+.mytheme .gapp .v-panel-caption-detailspanel {
+	font-size: 18pt;
+}
+
+.mytheme .gapp .v-panel .v-label {
+	font-size: 24pt;
+	color: gray;
+	line-height: 36pt;
+	background: white;
+}
+
+.mytheme .gapp .treecontainer, .mytheme .gapp .v-panel, .mytheme .gapp .v-caption {
+	background: white;
+}
+
+.mytheme .gapp .v-horizontallayout-spacing-on {
+	padding-left: 4px;
+}
