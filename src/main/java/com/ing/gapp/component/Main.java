@@ -6,60 +6,107 @@ import com.vaadin.ui.*;
 
 public class Main extends CustomComponent {
 
+    private final VerticalLayout root = new VerticalLayout();
+    private final HorizontalLayout titleBar = new HorizontalLayout();
+    private final Label title = new Label("GAPP");
+    private final HorizontalLayout horizontalLayout = new HorizontalLayout();
+    private final Panel menuContainer = new Panel("Menu");
+    private final Tree<String> menu = new Tree("Menu");
+    private final TreeData<String> menuData = new TreeData<>();
+    private final Panel detailsPanel = new Panel("Details");
+    private final VerticalLayout detailsLayout = new VerticalLayout();
+    private final VerticalLayout detailsBox = new VerticalLayout();
+
     public Main() {
-        VerticalLayout root = new VerticalLayout();
+       init();
+       initLayout();
+       initListeners();
+    }
+
+    public void init() {
+
+        root.addComponent(getTitleBar());
+        root.addComponent(getBody());
+    }
+
+    public void initLayout() {
         root.addStyleName("gapp");
         root.setSizeFull();
 
-        HorizontalLayout titleBar = new HorizontalLayout();
         titleBar.setWidth("100%");
-        root.addComponent(titleBar);
 
-        Label title = new Label("GAPP");
         title.addStyleName("title");
-        titleBar.addComponent(title);
 
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.setSizeFull();
         horizontalLayout.setSpacing(true);
-        root.addComponent(horizontalLayout);
         root.setExpandRatio(horizontalLayout, 1);
 
-        Panel menuContainer = new Panel("Menu");
         menuContainer.addStyleName("menucontainer");
         menuContainer.addStyleName("light"); // No border
         menuContainer.setWidth("-1px"); // Undefined width
         menuContainer.setHeight("100%");
 
-        horizontalLayout.addComponent(menuContainer);
-
-        Tree<String> menu = new Tree("Menu");
-        TreeData<String> menuData = new TreeData<>();
         menu.setSizeUndefined();
-        menuContainer.setContent(menu);
-        menuContainer.getContent().setWidth("-1px"); // Undefined width
+        menu.setWidth("200px");
 
-        Panel detailsPanel = new Panel("Details");
         detailsPanel.addStyleName("detailspanel");
         detailsPanel.addStyleName("light"); // No borders
         detailsPanel.setSizeFull();
-        horizontalLayout.addComponent(detailsPanel);
 
-        VerticalLayout detailsLayout = new VerticalLayout();
         detailsLayout.setSizeFull();
-        detailsPanel.setContent(detailsLayout);
 
-        VerticalLayout detailsBox = new VerticalLayout();
         detailsBox.setSizeUndefined();
-        final Label question = new Label("Where is the cat?");
-        question.setSizeUndefined();
-        detailsBox.addComponent(question);
-        detailsLayout.addComponent(detailsBox);
         detailsLayout.setComponentAlignment(detailsBox, Alignment.MIDDLE_CENTER);
 
         horizontalLayout.setExpandRatio(detailsPanel, 1);
         horizontalLayout.setExpandRatio(menuContainer, 0);
 
+
+        root.setMargin(true);
+        setCompositionRoot(root);
+    }
+
+    public void initListeners() {
+        menu.addItemClickListener(event ->
+                Notification.show("Click",
+                        Notification.Type.HUMANIZED_MESSAGE)
+        );
+    }
+
+    public HorizontalLayout getTitleBar() {
+        titleBar.addComponent(title);
+        return titleBar;
+    }
+
+    public HorizontalLayout getBody() {
+        horizontalLayout.addComponent(getMenuContainer());
+        horizontalLayout.addComponent(getDetailsPanel());
+        return horizontalLayout;
+    }
+
+    public Panel getMenuContainer() {
+        menuContainer.setContent(getMenu());
+        return menuContainer;
+    }
+
+    public Panel getDetailsPanel() {
+        detailsPanel.setContent(getDetailsLayout());
+        return detailsPanel;
+    }
+
+    public VerticalLayout getDetailsBox() {
+        final Label question = new Label("Where is the cat?");
+        question.setSizeUndefined();
+        detailsBox.addComponent(question);
+        return detailsBox;
+    }
+
+    public VerticalLayout getDetailsLayout() {
+        detailsLayout.addComponent(getDetailsBox());
+        return detailsLayout;
+    }
+
+    public Tree<String> getMenu() {
         menuData.addItem(null, "Home");
         menuData.addItem(null,"User");
         menuData.addItem(null,"Logout");
@@ -67,12 +114,6 @@ public class Main extends CustomComponent {
         TreeDataProvider inMemoryDataProvider = new TreeDataProvider<>(menuData);
         menu.setDataProvider(inMemoryDataProvider);
 
-        root.setMargin(true);
-        setCompositionRoot(root);
-
-        menu.addItemClickListener(event ->
-                Notification.show("Click",
-                        Notification.Type.HUMANIZED_MESSAGE)
-        );
+        return menu;
     }
 }
