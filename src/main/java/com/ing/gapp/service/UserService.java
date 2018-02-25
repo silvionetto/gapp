@@ -4,17 +4,16 @@ import com.ing.gapp.entity.User;
 import com.ing.gapp.rowmapper.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@Component
+@Service
 public class UserService {
     private static final Logger LOGGER = Logger.getLogger(UserService.class.getName());
     private static UserService instance;
-    private int nextId = 0;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
