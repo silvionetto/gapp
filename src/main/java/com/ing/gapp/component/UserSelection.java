@@ -9,19 +9,23 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.List;
 
-public class UserWindow extends CustomComponent {
+/**
+ * Class used to list all the users.
+ *
+ */
+public class UserSelection extends CustomComponent {
 
-    private UserService service;
+    private UserService userService;
 
     private Grid<User> grid = new Grid<>(User.class);
     private TextField filterText = new TextField();
 
-    public UserWindow(UserService service) {
-        this.service = service;
+    public UserSelection(UserService userService) {
+        this.userService = userService;
 
         final VerticalLayout layout = new VerticalLayout();
 
-        grid.setColumns("id", "name");
+        grid.setColumns("id", "name", "version");
 
         filterText.setPlaceholder("filter by name...");
         filterText.addValueChangeListener(e -> updateList());
@@ -43,7 +47,7 @@ public class UserWindow extends CustomComponent {
     }
 
     public void updateList() {
-        List<User> users = service.findAll(filterText.getValue());
+        List<User> users = userService.findAll(filterText.getValue());
         grid.setItems(users);
     }
 }

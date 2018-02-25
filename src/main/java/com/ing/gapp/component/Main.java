@@ -1,10 +1,14 @@
 package com.ing.gapp.component;
 
+import com.ing.gapp.form.UserForm;
+import com.ing.gapp.service.UserService;
 import com.vaadin.data.TreeData;
 import com.vaadin.data.provider.TreeDataProvider;
 import com.vaadin.ui.*;
 
 public class Main extends CustomComponent {
+
+    private UserService service;
 
     private final VerticalLayout root = new VerticalLayout();
     private final HorizontalLayout titleBar = new HorizontalLayout();
@@ -14,13 +18,15 @@ public class Main extends CustomComponent {
     private final Tree<String> menu = new Tree("Menu");
     private final TreeData<String> menuData = new TreeData<>();
     private final Panel detailsPanel = new Panel("Details");
-    private final VerticalLayout detailsLayout = new VerticalLayout();
+    private final HorizontalLayout detailsLayout = new HorizontalLayout();
     private final VerticalLayout detailsBox = new VerticalLayout();
 
-    public Main() {
-       init();
-       initLayout();
-       initListeners();
+    public Main(UserService service) {
+        this.service = service;
+
+        init();
+        initLayout();
+        initListeners();
     }
 
     public void init() {
@@ -67,9 +73,17 @@ public class Main extends CustomComponent {
     }
 
     public void initListeners() {
-        menu.addItemClickListener(event ->
-                Notification.show("Click",
-                        Notification.Type.HUMANIZED_MESSAGE)
+        menu.addItemClickListener((Tree.ItemClickListener<String>) event -> {
+            switch (event.getItem()) {
+                case "Home":
+                    detailsLayout.removeAllComponents();
+                    break;
+                case "User":
+                    detailsLayout.removeAllComponents();
+                    detailsLayout.addComponents(new UserSelection(service), new UserForm(service));
+                    break;
+            }
+        }
         );
     }
 
@@ -95,21 +109,21 @@ public class Main extends CustomComponent {
     }
 
     public VerticalLayout getDetailsBox() {
-        final Label question = new Label("Where is the cat?");
-        question.setSizeUndefined();
-        detailsBox.addComponent(question);
+        final Label home = new Label("Gapp");
+        home.setSizeUndefined();
+        detailsBox.addComponent(home);
         return detailsBox;
     }
 
-    public VerticalLayout getDetailsLayout() {
+    public HorizontalLayout getDetailsLayout() {
         detailsLayout.addComponent(getDetailsBox());
         return detailsLayout;
     }
 
     public Tree<String> getMenu() {
         menuData.addItem(null, "Home");
-        menuData.addItem(null,"User");
-        menuData.addItem(null,"Logout");
+        menuData.addItem(null, "User");
+        menuData.addItem(null, "Logout");
 
         TreeDataProvider inMemoryDataProvider = new TreeDataProvider<>(menuData);
         menu.setDataProvider(inMemoryDataProvider);

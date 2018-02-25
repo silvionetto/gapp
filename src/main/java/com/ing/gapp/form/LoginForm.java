@@ -16,10 +16,12 @@ public class LoginForm extends FormLayout {
 
     private final UserService userService;
     private final MyUI myUI;
+    private final Main main;
 
     public LoginForm(MyUI myUI, UserService userService) {
         this.myUI = myUI;
         this.userService = userService;
+        this.main = new Main(userService);
 
         setSizeUndefined();
         HorizontalLayout buttons = new HorizontalLayout(login);
@@ -36,7 +38,7 @@ public class LoginForm extends FormLayout {
         if (user != null && user.length() > 0 && password != null && password.length() > 0) {
             if (userService.login(user, password)) {
                 setVisible(false);
-                myUI.setContent(new Main());
+                myUI.setContent(main);
             } else {
                 error.setValue("Invalid login or password!");
             }
