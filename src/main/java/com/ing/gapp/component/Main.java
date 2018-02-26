@@ -1,5 +1,6 @@
 package com.ing.gapp.component;
 
+import com.ing.gapp.form.TradeForm;
 import com.ing.gapp.form.UserForm;
 import com.ing.gapp.service.UserService;
 import com.vaadin.data.TreeData;
@@ -78,6 +79,10 @@ public class Main extends CustomComponent {
                 case "Home":
                     detailsLayout.removeAllComponents();
                     break;
+                case "Trade":
+                    detailsLayout.removeAllComponents();
+                    detailsLayout.addComponent(new TradeForm());
+                    break;
                 case "User":
                     detailsLayout.removeAllComponents();
                     detailsLayout.addComponents(new UserSelection(service), new UserForm(service));
@@ -122,6 +127,8 @@ public class Main extends CustomComponent {
 
     public Tree<String> getMenu() {
         menuData.addItem(null, "Home");
+        menuData.addItem(null, "Trade");
+        menuData.addItem(null, "Curve");
         menuData.addItem(null, "User");
         menuData.addItem(null, "Logout");
 
