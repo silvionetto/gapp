@@ -3,7 +3,7 @@ package com.ing.gapp.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User extends BaseEntity {
+public class User extends BaseEntity<User> {
 
     private String name;
     private String password;
@@ -13,8 +13,8 @@ public class User extends BaseEntity {
 
     public User(int id, String name, String password, int version) {
         setId(id);
-        this.name = name;
-        this.password = password;
+        setName(name);
+        setPassword(password);
         setVersion(version);
     }
 
@@ -47,8 +47,4 @@ public class User extends BaseEntity {
                 '}';
     }
 
-    @Override
-    public User clone() throws CloneNotSupportedException {
-        return (User)super.clone();
-    }
 }
