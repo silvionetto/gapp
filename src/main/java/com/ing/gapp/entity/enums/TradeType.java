@@ -1,7 +1,7 @@
 package com.ing.gapp.entity.enums;
 
 public enum TradeType {
-    LOAN("Load"),
+    LOAN("Loan"),
     DEPOSIT("Deposit");
 
     private final String name;

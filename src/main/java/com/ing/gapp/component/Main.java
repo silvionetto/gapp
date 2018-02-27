@@ -1,6 +1,5 @@
 package com.ing.gapp.component;
 
-import com.ing.gapp.form.TradeForm;
 import com.ing.gapp.form.UserForm;
 import com.ing.gapp.service.UserService;
 import com.vaadin.data.TreeData;
@@ -81,7 +80,7 @@ public class Main extends CustomComponent {
                     break;
                 case "Trade":
                     detailsLayout.removeAllComponents();
-                    detailsLayout.addComponent(new TradeForm());
+                    detailsLayout.addComponent(new TradePanel());
                     break;
                 case "User":
                     detailsLayout.removeAllComponents();

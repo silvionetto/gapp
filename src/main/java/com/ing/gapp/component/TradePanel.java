@@ -1,14 +1,15 @@
-package com.ing.gapp.form;
+package com.ing.gapp.component;
 
 import com.ing.gapp.entity.Currency;
-import com.ing.gapp.entity.User;
 import com.ing.gapp.entity.enums.RateType;
 import com.ing.gapp.entity.enums.TradeType;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
-public class TradeForm extends FormLayout {
+public class TradePanel extends CustomComponent {
+
+    private final GridLayout root = new GridLayout(5,5);
     private final Label error = new Label();
     private final ComboBox<TradeType> tradeType = new ComboBox<>("Type:");
     private final ComboBox<Currency> currency = new ComboBox<>("Currency:");
@@ -18,24 +19,23 @@ public class TradeForm extends FormLayout {
     private final DateField endDate = new DateField("End Date:");
     private final Button clear = new Button("New");
     private final Button save = new Button("Save");
+    private final HorizontalLayout buttons = new HorizontalLayout(clear, save);
 
-    public TradeForm() {
-
+    public TradePanel() {
         init();
         initLayout();
         initListeners();
     }
 
     public void init() {
-        HorizontalLayout buttons = new HorizontalLayout(clear, save);
-
         tradeType.setItems(TradeType.values());
         tradeType.setItemCaptionGenerator(TradeType::getName);
+        tradeType.setEmptySelectionAllowed(false);
+        tradeType.setValue(TradeType.DEPOSIT);
 
         rateType.setItems(RateType.values());
         rateType.setItemCaptionGenerator(RateType::getType);
 
-        addComponents(error, tradeType, currency, amount, rateType, startDate, endDate, buttons);
     }
 
     public void initLayout() {
@@ -45,6 +45,21 @@ public class TradeForm extends FormLayout {
 
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+
+        root.addComponent(error, 0, 0);
+        root.addComponent(tradeType, 0, 1);
+        root.addComponent(currency, 0, 2);
+        root.addComponent(amount, 1, 2);
+        root.addComponent(rateType, 2, 2);
+        root.addComponent(startDate, 3, 2);
+        root.addComponent(endDate, 4,2);
+        root.addComponent(buttons, 0, 3);
+        root.setSpacing(true);
+        root.setSizeFull();
+        root.setMargin(true);
+        root.setSizeUndefined();
+
+        setCompositionRoot(root);
 
     }
 
@@ -63,5 +78,4 @@ public class TradeForm extends FormLayout {
     public void delete() {
         System.out.println("Delete");
     }
-
 }
