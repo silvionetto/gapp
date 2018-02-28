@@ -35,6 +35,7 @@ public class TradePanel extends CustomComponent {
 
         rateType.setItems(RateType.values());
         rateType.setItemCaptionGenerator(RateType::getType);
+        rateType.setValue(RateType.FIXED);
 
     }
 
