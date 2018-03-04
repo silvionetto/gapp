@@ -5,11 +5,16 @@ import com.ing.gapp.entity.enums.RateType;
 import com.ing.gapp.entity.enums.TradeType;
 import com.ing.gapp.service.CurrencyService;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
+@UIScope
 public class TradePanel extends CustomComponent {
 
     private final GridLayout root = new GridLayout(5,5);
@@ -24,6 +29,7 @@ public class TradePanel extends CustomComponent {
     private final Button save = new Button("Save");
     private final HorizontalLayout buttons = new HorizontalLayout(clear, save);
 
+    @Autowired
     private CurrencyService currencyService;
 
     public TradePanel(CurrencyService currencyService) {

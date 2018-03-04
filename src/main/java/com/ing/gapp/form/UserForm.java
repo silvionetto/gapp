@@ -3,9 +3,14 @@ package com.ing.gapp.form;
 import com.ing.gapp.entity.User;
 import com.ing.gapp.service.UserService;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
+@UIScope
 public class UserForm extends FormLayout {
     private final Label error = new Label();
     private final TextField userName = new TextField("User:");
@@ -14,6 +19,7 @@ public class UserForm extends FormLayout {
     private final Button save = new Button("Save");
     private final Button delete = new Button("Delete");
 
+    @Autowired
     private final UserService userService;
 
     public UserForm(UserService userService) {

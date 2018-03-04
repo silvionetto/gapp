@@ -2,10 +2,15 @@ package com.ing.gapp.component;
 
 import com.ing.gapp.entity.Bank;
 import com.ing.gapp.service.BankService;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
+@UIScope
 public class OvernightPanel extends CustomComponent {
 
     private final GridLayout root = new GridLayout(3, 3);
@@ -16,6 +21,7 @@ public class OvernightPanel extends CustomComponent {
     private final Button save = new Button("Save");
     private final HorizontalLayout buttons = new HorizontalLayout(clear, save);
 
+    @Autowired
     private BankService bankService;
 
     public OvernightPanel(BankService bankService) {

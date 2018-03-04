@@ -16,11 +16,13 @@ import org.springframework.stereotype.Component;
 public class Main extends CustomComponent {
 
     @Autowired
-    private UserService userService;
+    private UserSelection userSelection;
     @Autowired
-    private BankService bankService;
+    private UserForm userForm;
     @Autowired
-    private CurrencyService currencyService;
+    private OvernightPanel overnightPanel;
+    @Autowired
+    private TradePanel tradePanel;
 
     private final VerticalLayout root = new VerticalLayout();
     private final HorizontalLayout titleBar = new HorizontalLayout();
@@ -91,15 +93,15 @@ public class Main extends CustomComponent {
                     break;
                 case "Trade":
                     detailsLayout.removeAllComponents();
-                    detailsLayout.addComponent(new TradePanel(currencyService));
+                    detailsLayout.addComponent(tradePanel);
                     break;
                 case "Overnight":
                     detailsLayout.removeAllComponents();
-                    detailsLayout.addComponent(new OvernightPanel(bankService));
+                    detailsLayout.addComponent(overnightPanel);
                     break;
                 case "User":
                     detailsLayout.removeAllComponents();
-                    detailsLayout.addComponents(new UserSelection(userService), new UserForm(userService));
+                    detailsLayout.addComponents(userSelection, userForm);
                     break;
             }
         }
