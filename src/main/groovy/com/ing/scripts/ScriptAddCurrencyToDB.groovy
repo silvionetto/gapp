@@ -12,7 +12,6 @@ sql.execute "INSERT INTO TB_Currency(name, code, version) VALUES ('EURO', 'EUR',
 sql.execute "INSERT INTO TB_Currency(name, code, version) VALUES ('DOLLAR', 'USD', 0)"
 sql.execute "INSERT INTO TB_Currency(name, code, version) VALUES ('REAL', 'BRL', 0)"
 
-def rowNum = 0
 sql.query('SELECT name, code FROM TB_Currency') { resultSet ->
     while (resultSet.next()) {
         def name  = resultSet.getString('name')

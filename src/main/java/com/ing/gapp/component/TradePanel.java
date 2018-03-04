@@ -3,9 +3,12 @@ package com.ing.gapp.component;
 import com.ing.gapp.entity.Currency;
 import com.ing.gapp.entity.enums.RateType;
 import com.ing.gapp.entity.enums.TradeType;
+import com.ing.gapp.service.CurrencyService;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+
+import java.util.List;
 
 public class TradePanel extends CustomComponent {
 
@@ -21,7 +24,11 @@ public class TradePanel extends CustomComponent {
     private final Button save = new Button("Save");
     private final HorizontalLayout buttons = new HorizontalLayout(clear, save);
 
-    public TradePanel() {
+    private CurrencyService currencyService;
+
+    public TradePanel(CurrencyService currencyService) {
+        this.currencyService = currencyService;
+
         init();
         initLayout();
         initListeners();
@@ -32,6 +39,10 @@ public class TradePanel extends CustomComponent {
         tradeType.setItemCaptionGenerator(TradeType::getName);
         tradeType.setEmptySelectionAllowed(false);
         tradeType.setValue(TradeType.DEPOSIT);
+
+        currency.setItems(getCurrencies());
+        currency.setItemCaptionGenerator(Currency::getCode);
+        currency.setEmptySelectionAllowed(false);
 
         rateType.setItems(RateType.values());
         rateType.setItemCaptionGenerator(RateType::getType);
@@ -78,5 +89,9 @@ public class TradePanel extends CustomComponent {
 
     public void delete() {
         System.out.println("Delete");
+    }
+
+    public List<Currency> getCurrencies() {
+        return currencyService.findAll();
     }
 }

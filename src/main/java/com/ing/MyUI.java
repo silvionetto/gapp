@@ -3,6 +3,7 @@ package com.ing;
 import javax.servlet.annotation.WebServlet;
 
 import com.ing.gapp.form.LoginForm;
+import com.ing.gapp.service.BankService;
 import com.ing.gapp.service.UserService;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -26,13 +27,15 @@ public class MyUI extends UI {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private BankService bankService;
+
+    @Autowired
     private LoginForm loginForm;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         //userService.ensureTestData();
-
-        loginForm = new LoginForm(this, userService);
 
         final VerticalLayout root = new VerticalLayout();
         root.setSizeFull();

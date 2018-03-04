@@ -1,14 +1,26 @@
 package com.ing.gapp.component;
 
 import com.ing.gapp.form.UserForm;
+import com.ing.gapp.service.BankService;
+import com.ing.gapp.service.CurrencyService;
 import com.ing.gapp.service.UserService;
 import com.vaadin.data.TreeData;
 import com.vaadin.data.provider.TreeDataProvider;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
+@UIScope
 public class Main extends CustomComponent {
 
-    private UserService service;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private BankService bankService;
+    @Autowired
+    private CurrencyService currencyService;
 
     private final VerticalLayout root = new VerticalLayout();
     private final HorizontalLayout titleBar = new HorizontalLayout();
@@ -21,9 +33,8 @@ public class Main extends CustomComponent {
     private final HorizontalLayout detailsLayout = new HorizontalLayout();
     private final VerticalLayout detailsBox = new VerticalLayout();
 
-    public Main(UserService service) {
-        this.service = service;
-
+    @Autowired
+    public Main() {
         init();
         initLayout();
         initListeners();
@@ -80,11 +91,15 @@ public class Main extends CustomComponent {
                     break;
                 case "Trade":
                     detailsLayout.removeAllComponents();
-                    detailsLayout.addComponent(new TradePanel());
+                    detailsLayout.addComponent(new TradePanel(currencyService));
+                    break;
+                case "Overnight":
+                    detailsLayout.removeAllComponents();
+                    detailsLayout.addComponent(new OvernightPanel(bankService));
                     break;
                 case "User":
                     detailsLayout.removeAllComponents();
-                    detailsLayout.addComponents(new UserSelection(service), new UserForm(service));
+                    detailsLayout.addComponents(new UserSelection(userService), new UserForm(userService));
                     break;
             }
         }
@@ -127,6 +142,7 @@ public class Main extends CustomComponent {
     public Tree<String> getMenu() {
         menuData.addItem(null, "Home");
         menuData.addItem(null, "Trade");
+        menuData.addItem(null, "Overnight");
         menuData.addItem(null, "Curve");
         menuData.addItem(null, "User");
         menuData.addItem(null, "Logout");

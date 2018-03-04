@@ -1,27 +1,31 @@
 package com.ing.gapp.form;
 
-import com.ing.MyUI;
 import com.ing.gapp.component.Main;
 import com.ing.gapp.service.UserService;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import static com.vaadin.event.ShortcutAction.KeyCode;
 
+@Component
+@UIScope
 public class LoginForm extends FormLayout {
     private final Label error = new Label();
     private final TextField userName = new TextField("User:");
     private final PasswordField userPassword = new PasswordField("Password:");
     private final Button login = new Button("Login");
 
-    private final UserService userService;
-    private final MyUI myUI;
-    private final Main main;
+    @Autowired
+    private UserService userService;
 
-    public LoginForm(MyUI myUI, UserService userService) {
-        this.myUI = myUI;
-        this.userService = userService;
-        this.main = new Main(userService);
+    @Autowired
+    private Main main;
+
+    @Autowired
+    public LoginForm() {
 
         setSizeUndefined();
         HorizontalLayout buttons = new HorizontalLayout(login);
@@ -38,7 +42,7 @@ public class LoginForm extends FormLayout {
         if (user != null && user.length() > 0 && password != null && password.length() > 0) {
             if (userService.login(user, password)) {
                 setVisible(false);
-                myUI.setContent(main);
+                getUI().setContent(main);
             } else {
                 error.setValue("Invalid login or password!");
             }
