@@ -11,20 +11,8 @@ import java.util.List;
 @Component
 public class BankService {
 
-    private static BankService instance;
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    /**
-     * @return a reference to an example facade for BankService objects.
-     */
-    public static BankService getInstance() {
-        if (instance == null) {
-            instance = new BankService();
-        }
-        return instance;
-    }
 
     /**
      * @return all available Bank objects.

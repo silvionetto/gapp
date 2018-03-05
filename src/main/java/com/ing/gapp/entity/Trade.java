@@ -71,4 +71,17 @@ public class Trade extends BaseEntity {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
+
+    @Override
+    public String toString() {
+        return "Trade{" +
+                "tradeType=" + tradeType +
+                ", enteredDate=" + enteredDate +
+                ", tradeCurrency=" + tradeCurrency +
+                ", tradeAmount=" + tradeAmount +
+                ", rateType=" + rateType +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
 }

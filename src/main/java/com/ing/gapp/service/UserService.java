@@ -13,22 +13,10 @@ import java.util.logging.Logger;
 @Component
 public class UserService {
     private static final Logger LOGGER = Logger.getLogger(UserService.class.getName());
-    private static UserService instance;
     private int nextId = 0;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    /**
-     * @return a reference to an example facade for UserService objects.
-     */
-    public static UserService getInstance() {
-        if (instance == null) {
-            instance = new UserService();
-            instance.ensureTestData();
-        }
-        return instance;
-    }
 
     /**
      * @return all available User objects.

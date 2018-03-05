@@ -1,9 +1,11 @@
 package com.ing.gapp.component;
 
 import com.ing.gapp.entity.Currency;
+import com.ing.gapp.entity.Trade;
 import com.ing.gapp.entity.enums.RateType;
 import com.ing.gapp.entity.enums.TradeType;
 import com.ing.gapp.service.CurrencyService;
+import com.ing.gapp.util.DateUtil;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
@@ -11,6 +13,8 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -54,6 +58,9 @@ public class TradePanel extends CustomComponent {
         rateType.setItemCaptionGenerator(RateType::getType);
         rateType.setValue(RateType.FIXED);
 
+        startDate.setValue(LocalDate.now());
+        endDate.setValue(LocalDate.now());
+
     }
 
     public void initLayout() {
@@ -91,6 +98,14 @@ public class TradePanel extends CustomComponent {
 
     public void save() {
         System.out.println("Save");
+        Trade trade = new Trade();
+        trade.setTradeType(tradeType.getValue());
+        trade.setTradeCurrency(currency.getValue());
+        trade.setTradeAmount(new BigDecimal(amount.getValue()));
+        trade.setRateType(rateType.getValue());
+        trade.setStartDate(DateUtil.LocalDateToDate(startDate.getValue()));
+        trade.setEndDate(DateUtil.LocalDateToDate(endDate.getValue()));
+        System.out.println(trade);
     }
 
     public void delete() {
