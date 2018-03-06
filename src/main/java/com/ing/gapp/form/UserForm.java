@@ -48,12 +48,12 @@ public class UserForm extends FormLayout {
     }
 
     public void initListeners() {
-        clear.addClickListener(e -> this.clean());
+        clear.addClickListener(e -> this.clear());
         save.addClickListener(e -> this.save());
         delete.addClickListener(e -> this.delete());
     }
 
-    public void clean() {
+    public void clear() {
         userName.clear();
         userPassword.clear();
     }

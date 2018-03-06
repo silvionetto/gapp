@@ -21,10 +21,11 @@ sql.execute "INSERT INTO TB_Bank(name, version) VALUES ('ING', 0)"
 sql.execute "INSERT INTO TB_Bank(name, version) VALUES ('BNP', 0)"
 sql.execute "INSERT INTO TB_Bank(name, version) VALUES ('ABN', 0)"
 
-sql.query('SELECT name FROM TB_Bank') { resultSet ->
+sql.query('SELECT id, name FROM TB_Bank') { resultSet ->
     while (resultSet.next()) {
+        def id = resultSet.getInt('id')
         def name  = resultSet.getString('name')
-        println "$name"
+        println "${id}:${name}"
     }
 }
 
