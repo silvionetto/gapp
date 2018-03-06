@@ -1,7 +1,5 @@
 package com.ing;
 
-import javax.servlet.annotation.WebServlet;
-
 import com.ing.gapp.form.LoginForm;
 import com.ing.gapp.service.BankService;
 import com.ing.gapp.service.UserService;
@@ -10,8 +8,11 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.spring.annotation.SpringUI;
-import com.vaadin.ui.*;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.servlet.annotation.WebServlet;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 

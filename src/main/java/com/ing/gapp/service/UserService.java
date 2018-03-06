@@ -62,7 +62,11 @@ public class UserService {
      * @param user the User to be deleted
      */
     public synchronized void delete(User user) {
-        jdbcTemplate.update("DELETE FROM TB_Users WHERE id = ?", new Object[]{user.getId()});
+        if (user.getId() != null && user.getId() != 0) {
+            jdbcTemplate.update("DELETE FROM TB_Users WHERE id = ?", new Object[]{user.getId()});
+        } else if (user.getName() != null && user.getName().length() > 0) {
+            jdbcTemplate.update("DELETE FROM TB_Users WHERE user_name = ?", new Object[]{user.getName()});
+        }
     }
 
     /**
@@ -85,8 +89,8 @@ public class UserService {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-        jdbcTemplate.update("Insert into TB_Users(id, user_name, user_password, version) values (?, ?, ?, ?)",
-                entry.getId(), entry.getName(), entry.getPassword(), entry.getVersion());
+        jdbcTemplate.update("Insert into TB_Users(user_name, user_password, version) values (?, ?, ?)",
+                entry.getName(), entry.getPassword(), entry.getVersion());
     }
 
     /**

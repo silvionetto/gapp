@@ -8,8 +8,6 @@
 
 package org.fpml.fpml_5.master;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
@@ -17,6 +15,8 @@ import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 
 /**

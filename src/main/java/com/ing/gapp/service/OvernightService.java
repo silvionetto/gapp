@@ -1,9 +1,7 @@
 package com.ing.gapp.service;
 
 import com.ing.gapp.entity.Overnight;
-import com.ing.gapp.entity.User;
 import com.ing.gapp.rowmapper.OvernightRowMapper;
-import com.ing.gapp.rowmapper.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;

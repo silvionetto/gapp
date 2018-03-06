@@ -1,9 +1,5 @@
 package com.ing.gapp.component;
 
-import com.ing.gapp.form.UserForm;
-import com.ing.gapp.service.BankService;
-import com.ing.gapp.service.CurrencyService;
-import com.ing.gapp.service.UserService;
 import com.vaadin.data.TreeData;
 import com.vaadin.data.provider.TreeDataProvider;
 import com.vaadin.spring.annotation.UIScope;
@@ -16,9 +12,7 @@ import org.springframework.stereotype.Component;
 public class Main extends CustomComponent {
 
     @Autowired
-    private UserSelection userSelection;
-    @Autowired
-    private UserForm userForm;
+    private UserPanel userPanel;
     @Autowired
     private OvernightPanel overnightPanel;
     @Autowired
@@ -101,7 +95,7 @@ public class Main extends CustomComponent {
                     break;
                 case "User":
                     detailsLayout.removeAllComponents();
-                    detailsLayout.addComponents(userSelection, userForm);
+                    detailsLayout.addComponents(userPanel);
                     break;
             }
         }

@@ -8,15 +8,12 @@
 
 package org.fpml.fpml_5.master;
 
+import org.w3._2000._09.xmldsig_.SignatureType;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.datatype.XMLGregorianCalendar;
-import org.w3._2000._09.xmldsig_.SignatureType;
 
 
 /**
