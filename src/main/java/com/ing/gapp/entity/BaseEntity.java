@@ -3,7 +3,7 @@ package com.ing.gapp.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class BaseEntity implements Serializable, Cloneable {
+public abstract class BaseEntity<T extends BaseEntity> implements Serializable, Cloneable {
 
     private Integer id;
     private Integer version;
@@ -45,5 +45,10 @@ public abstract class BaseEntity implements Serializable, Cloneable {
                 "id=" + id +
                 ", version=" + version +
                 '}';
+    }
+
+    @Override
+    public T clone() throws CloneNotSupportedException {
+        return (T)super.clone();
     }
 }

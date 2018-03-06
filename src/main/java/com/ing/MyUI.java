@@ -2,20 +2,16 @@ package com.ing;
 
 import javax.servlet.annotation.WebServlet;
 
-import com.ing.gapp.entity.User;
+import com.ing.gapp.form.LoginForm;
+import com.ing.gapp.service.BankService;
 import com.ing.gapp.service.UserService;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -25,40 +21,27 @@ import java.util.List;
  * overridden to add component to the user interface and initialize non-component functionality.
  */
 @SpringUI
+@Theme("mytheme")
 public class MyUI extends UI {
 
     @Autowired
-    private UserService service;
+    private UserService userService;
 
-    private Grid<User> grid = new Grid<>(User.class);
-    private TextField filterText = new TextField();
+    @Autowired
+    private BankService bankService;
+
+    @Autowired
+    private LoginForm loginForm;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        //service.ensureTestData();
+        //userService.ensureTestData();
 
-        final VerticalLayout layout = new VerticalLayout();
+        final VerticalLayout root = new VerticalLayout();
+        root.setSizeFull();
+        root.addComponent(loginForm);
 
-
-        grid.setColumns("id", "name");
-
-        filterText.setPlaceholder("filter by name...");
-        filterText.addValueChangeListener(e -> updateList());
-        filterText.setValueChangeMode(ValueChangeMode.LAZY);
-
-        Button clearFilter = new Button(VaadinIcons.CLOSE);
-        clearFilter.setDescription("Clear the current filter");
-        clearFilter.addClickListener(event -> filterText.clear());
-
-        CssLayout filtering = new CssLayout();
-        filtering.addComponents(filterText, clearFilter);
-        filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-
-        layout.addComponents(filtering, grid);
-
-        updateList();
-
-        setContent(layout);
+        setContent(root);
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
@@ -66,8 +49,4 @@ public class MyUI extends UI {
     public static class MyUIServlet extends VaadinServlet {
     }
 
-    public void updateList() {
-        List<User> users = service.findAll(filterText.getValue());
-        grid.setItems(users);
-    }
 }

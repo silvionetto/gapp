@@ -6,30 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Component
 public class UserService {
     private static final Logger LOGGER = Logger.getLogger(UserService.class.getName());
-    private static UserService instance;
-    private Map<Integer, User> users = new HashMap<>();
     private int nextId = 0;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    /**
-     * @return a reference to an example facade for UserService objects.
-     */
-    public static UserService getInstance() {
-        if (instance == null) {
-            instance = new UserService();
-            instance.ensureTestData();
-        }
-        return instance;
-    }
 
     /**
      * @return all available User objects.
@@ -51,19 +38,31 @@ public class UserService {
     }
 
     /**
+     * Find the user by name.
+     *
+     * @param name the name of the user
+     * @return the user
+     */
+    public synchronized User findByName(String name) {
+
+        return jdbcTemplate.queryForObject("SELECT id, user_name, user_password, version from TB_Users WHERE user_name = ?",
+                new Object[]{name}, new UserRowMapper());
+    }
+
+    /**
      * @return the amount of all user in the system
      */
-    public synchronized long count() {
-        return users.size();
+    public synchronized int count() {
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM TB_Users", Integer.class);
     }
 
     /**
      * Deletes a user from a system
      *
-     * @param value the User to be deleted
+     * @param user the User to be deleted
      */
-    public synchronized void delete(User value) {
-        users.remove(value.getId());
+    public synchronized void delete(User user) {
+        jdbcTemplate.update("DELETE FROM TB_Users WHERE id = ?", new Object[]{user.getId()});
     }
 
     /**
@@ -103,20 +102,31 @@ public class UserService {
 
         jdbcTemplate.execute(createDB);
 
-        final String[] names = new String[]{"Gabrielle Patel", "Brian Robinson", "Eduardo Haugen",
-                "Koen Johansen", "Alejandro Macdonald", "Angel Karlsson", "Yahir Gustavsson", "Haiden Svensson",
-                "Emily Stewart", "Corinne Davis", "Ryann Davis", "Yurem Jackson", "Kelly Gustavsson",
-                "Eileen Walker", "Katelyn Martin", "Israel Carlsson", "Quinn Hansson", "Makena Smith",
-                "Danielle Watson", "Leland Harris", "Gunner Karlsen", "Jamar Olsson", "Lara Martin",
-                "Ann Andersson", "Remington Andersson", "Rene Carlsson", "Elvis Olsen", "Solomon Olsen",
-                "Jaydan Jackson", "Bernard Nilsen"};
+        final String[] names = new String[]{"admin", "user"};
         for (int i = 0; i < names.length; i++) {
             String name = names[i];
             User user = new User();
             user.setId(i);
             user.setName(name);
+            user.setPassword(name);
             user.setVersion(0);
             save(user);
         }
+    }
+
+    /**
+     * Validate a user name and password.
+     *
+     * @param userName     the user name
+     * @param userPassword the user password
+     * @return true if is a valid user
+     */
+    public synchronized boolean login(String userName, String userPassword) {
+        boolean valid = false;
+        User user = findByName(userName);
+        if (user != null && userPassword.equals(user.getPassword())) {
+            valid = true;
+        }
+        return valid;
     }
 }
