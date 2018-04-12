@@ -29,7 +29,7 @@ public class BankService {
      * @return list a Bank objects
      */
     public synchronized List<Bank> findAll(String stringFilter) {
-        return jdbcTemplate.query("SELECT id, name, version from TB_Bank where name like ?",
+        return jdbcTemplate.query("SELECT id, name, version from Bank where name like ?",
                 new Object[]{"%" + stringFilter + "%"}, new BankRowMapper());
     }
 }
