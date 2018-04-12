@@ -11,7 +11,7 @@ def sql = Sql.newInstance(url, user, password, driver)
 // ... create 'sql' instance
 sql.execute '''
   CREATE TABLE Bank (
-    id          INT NOT NUL AUTO_INCREMENT,
+    id          INT NOT NULL AUTO_INCREMENT,
     name        VARCHAR(64) NOT NULL,
     version     INT NOT NULL,
     PRIMARY KEY (id)
