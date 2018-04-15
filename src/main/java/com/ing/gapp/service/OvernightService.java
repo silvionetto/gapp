@@ -54,7 +54,7 @@ public class OvernightService {
      * @return list a Overnight objects
      */
     public synchronized List<Overnight> findAll(String stringFilter) {
-        return jdbcTemplate.query("SELECT id, bank, b.name as bank_name, amount, rate, version from TB_Overnight o, TB_Bank b where o.bank = b.id and b.name like ?",
+        return jdbcTemplate.query("SELECT o.id, b.name as bank_name, o.amount, o.rate, o.version from TB_Overnight o, TB_Bank b where o.bank = b.id and b.name like ?",
                 new Object[]{"%" + stringFilter + "%"}, new OvernightRowMapper());
     }
 }
