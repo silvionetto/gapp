@@ -10,19 +10,19 @@ def sql = Sql.newInstance(url, user, password, driver)
 
 // ... create 'sql' instance
 sql.execute '''
-  CREATE TABLE Bank (
-    id          INT NOT NULL AUTO_INCREMENT,
+  CREATE TABLE TB_Bank (
+    id          INTEGER NOT NULL AUTO_INCREMENT,
     name        VARCHAR(64) NOT NULL,
-    version     INT NOT NULL,
+    version     INTEGER NOT NULL,
     PRIMARY KEY (id)
   );
 '''
 
-sql.execute "INSERT INTO Bank(name, version) VALUES ('ING', 0)"
-sql.execute "INSERT INTO Bank(name, version) VALUES ('BNP', 0)"
-sql.execute "INSERT INTO Bank(name, version) VALUES ('ABN', 0)"
+sql.execute "INSERT INTO TB_Bank(name, version) VALUES ('ING', 0)"
+sql.execute "INSERT INTO TB_Bank(name, version) VALUES ('BNP', 0)"
+sql.execute "INSERT INTO TB_Bank(name, version) VALUES ('ABN', 0)"
 
-sql.query('SELECT id, name FROM Bank') { resultSet ->
+sql.query('SELECT id, name FROM TB_Bank') { resultSet ->
     while (resultSet.next()) {
         def id = resultSet.getInt('id')
         def name  = resultSet.getString('name')

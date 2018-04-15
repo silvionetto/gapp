@@ -2,10 +2,10 @@ package com.ing.scripts
 
 import groovy.sql.Sql
 
-def url = 'jdbc:hsqldb:gappDB'
-def user = 'sa'
-def password = ''
-def driver = 'org.hsqldb.jdbcDriver'
+def url = 'jdbc:mysql://devdb.cc72u2l6fl7d.us-east-1.rds.amazonaws.com:3306/gappDB'
+def user = 'gapp'
+def password = 'gapp'
+def driver = 'com.mysql.jdbc.Driver'
 def sql = Sql.newInstance(url, user, password, driver)
 
 def rowNum = 0

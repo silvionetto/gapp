@@ -2,11 +2,22 @@ package com.ing.scripts
 
 import groovy.sql.Sql
 
-def url = 'jdbc:hsqldb:gappDB'
-def user = 'sa'
-def password = ''
-def driver = 'org.hsqldb.jdbcDriver'
+def url = 'jdbc:mysql://devdb.cc72u2l6fl7d.us-east-1.rds.amazonaws.com:3306/gappDB'
+def user = 'gapp'
+def password = 'gapp'
+def driver = 'com.mysql.jdbc.Driver'
 def sql = Sql.newInstance(url, user, password, driver)
+
+// ... create 'sql' instance
+sql.execute '''
+  CREATE TABLE TB_Users (
+    id          INTEGER NOT NULL AUTO_INCREMENT,
+    user_name   VARCHAR(64),
+    user_password    VARCHAR(64),
+    version     INTEGER,
+    PRIMARY KEY (id)
+  );
+'''
 
 sql.execute "INSERT INTO TB_Users(user_name, user_password, version) VALUES ('admin', 'admin', 0)"
 sql.execute "INSERT INTO TB_Users(user_name, user_password, version) VALUES ('user', 'user', 0)"
