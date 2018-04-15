@@ -12,11 +12,11 @@ def sql = Sql.newInstance(url, user, password, driver)
 sql.execute '''
   CREATE TABLE TB_Overnight (
     id          INTEGER NOT NULL AUTO_INCREMENT,
-    overnightDate DATE DEFAULT CURRENT_DATE,
+    overnightDate DATE,
     bank        INTEGER,
     amount      DECIMAL(10,2),
     rate        FLOAT,
-    version     INTEGER
+    version     INTEGER,
     PRIMARY KEY (id)
   );
 '''
